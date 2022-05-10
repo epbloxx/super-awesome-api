@@ -36,10 +36,10 @@ jobs:
             echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
         env:
           MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
-          System : 'supercool'
-          Platform : 'bloxx'
-          Subsystem : 'webapi'
-          Environment : 'test'
+          Application__System : 'supercool'
+          Application__Platform : 'bloxx'
+          Application__Subsystem : 'webapi'
+          Application__Environment : 'test'
           AWS_ACCESS_KEY_ID :  '${{ secrets.AWS_ACCESS_KEY_ID }}'
           AWS_SECRET_ACCESS_KEY :  '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
           AWS_DEFAULT_REGION : 'eu-central-1'
@@ -70,11 +70,11 @@ jobs:
             # run deploy script
             "${GITHUB_WORKSPACE}/build.sh" -t VerifyAndReleaseNext
         env:
-          System : 'supercool'
-          Platform : 'bloxx'
-          Subsystem : 'webapi'
+          Application__System : 'supercool'
+          Application__Platform : 'bloxx'
+          Application__Subsystem : 'webapi'
           MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
-          Environment : 'test'
+          Application__Environment : 'test'
           ClusterName : 'test-bloxx-ecs-cluster'
           ClusterArn : '${{ secrets.CLUSTER_ARN }}'
           ApiGatewayDomainName : 'supercool.test.parknowportal.com'
@@ -112,11 +112,11 @@ jobs:
             # run deploy script
             "${GITHUB_WORKSPACE}/build.sh" -t VerifyAndReleaseNext
         env:
-          System : 'supercool'
-          Platform : 'bloxx'
-          Subsystem : 'webapi'
+          Application__System : 'supercool'
+          Application__Platform : 'bloxx'
+          Application__Subsystem : 'webapi'
           MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
-          Environment : 'test'
+          Application__Environment : 'test'
           ClusterName : 'sit-bloxx-ecs-cluster'
           ClusterArn : '${{ secrets.CLUSTER_ARN }}'
           ApiGatewayDomainName : 'supercool.sit.parknowportal.com'
