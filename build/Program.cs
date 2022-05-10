@@ -1,6 +1,9 @@
 using Amazon;
 using Amazon.ECR;
 using Amazon.ECR.Model;
+using Amazon.Runtime;
+using Amazon.SecurityToken;
+using Amazon.SecurityToken.Model;
 using Build;
 using Build.Extensions;
 using Build.Tasks;
@@ -65,28 +68,29 @@ public class EcrDeployBuildTask : FrostingTask<BuildContext>
 {
     public override void Run(BuildContext context)
     {
-     if (context.IsReleasableBranch())
+        if (context.IsReleasableBranch())
         {
-    
-        if (context.TeamCity().IsRunningOnTeamCity)
-        {
-            System.Environment.SetEnvironmentVariable("AWS_PROFILE", null);
-            context.Information("Set AWS_PROFILE to null");
-        }
 
-        context.Log.Information("deploying ECR..");
-        string stackName = @$"{context.Options.ApplicationPlatfrom}-{context.Options.ApplicationSystem}-{context.Options.ApplicationSubsystem}-{context.Options.ApplicationName}-Ecr-stack"
-                .Replace("_", "-")
-                .ToLower();
-        context.CloudFormationDeploy(new DeployArguments
-        {
-            StackName = stackName,
-            TemplateFile = "template-ecr.yaml",
-            ParameterOverrides = new Dictionary<string, string>
+            if (context.TeamCity().IsRunningOnTeamCity)
+            {
+                System.Environment.SetEnvironmentVariable("AWS_PROFILE", null);
+                context.Information("Set AWS_PROFILE to null");
+            }
+
+            context.Log.Information("deploying ECR..");
+            string stackName = @$"{context.Options.ApplicationPlatfrom}-{context.Options.ApplicationSystem}-{context.Options.ApplicationSubsystem}-{context.Options.ApplicationName}-Ecr-stack"
+                    .Replace("_", "-")
+                    .ToLower();
+            context.CloudFormationDeploy(new DeployArguments
+            {
+                StackName = stackName,
+                TemplateFile = "template-ecr.yaml",
+                ParameterOverrides = new Dictionary<string, string>
             {{"Environment", context.Options.ApplicationEnvironment}},
-            Capabilities = new List<string> { "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND" }
-        });
-        context.Information("Successfully deploy ECR stack ");
+                RoleArn = System.Environment.GetEnvironmentVariable("AWS_ECR_ROLE_ARN"),
+                Capabilities = new List<string> { "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND" }
+            });
+            context.Information("Successfully deploy ECR stack ");
         }
     }
 }
@@ -104,9 +108,20 @@ public class DockerBuildAndPushTask : AsyncFrostingTask<BuildContext>
 
             string destinationTag = $"{context.Options.EcrRoot}/{context.GetEcrRepoName()}:{context.Options.ApplicationVersion}".ToLower();
 
-            var region = RegionEndpoint.GetBySystemName(context.Options.AwsRegion);
+ 
+            var sts = new AmazonSecurityTokenServiceClient();
+            var roleArn = System.Environment.GetEnvironmentVariable("AWS_ECR_ROLE_ARN");
+            var result = await sts.AssumeRoleAsync(new AssumeRoleRequest
+            {
+                RoleArn = roleArn,
+            });
 
-            var ecrClient = new AmazonECRClient(region);
+
+            var credentials = result.Credentials;
+
+            var sessionCredentials = new SessionAWSCredentials(credentials.AccessKeyId, credentials.SecretAccessKey, credentials.SessionToken);
+
+            var ecrClient = new AmazonECRClient(sessionCredentials);
             var getTokenResponse = await ecrClient.GetAuthorizationTokenAsync(new GetAuthorizationTokenRequest());
             if (getTokenResponse.HttpStatusCode == HttpStatusCode.OK)
             {
@@ -156,4 +171,4 @@ public class DefaultTask : FrostingTask
 [IsDependentOn(typeof(ReleaseTask))]
 public sealed class VerifyAndReleaseNext : FrostingTask
 {
-} 
+}

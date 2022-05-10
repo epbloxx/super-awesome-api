@@ -17,6 +17,8 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="AWSSDK.ECR" Version="3.7.3.7" />
+		<PackageReference Include="AWSSDK.IdentityManagement" Version="3.7.2.138" />
+		<PackageReference Include="AWSSDK.SecurityToken" Version="3.7.1.150" />
 		<PackageReference Include="Cake.CloudFormation" Version="0.4.0" />
 		<PackageReference Include="Cake.Docker" Version="1.1.1" />
 		<PackageReference Include="Cake.Frosting" Version="2.1.0" />

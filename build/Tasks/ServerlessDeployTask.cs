@@ -46,7 +46,7 @@ namespace Build.Tasks
                     TemplateFile = template,
                     Capabilities = new List<string> { "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND" },
                     ParameterOverrides = GetParametersOverrides(context),
-                    RoleArn = Environment.GetEnvironmentVariable("Application__RoleArn") ?? "arn:aws:iam::637422166946:role/sam-cloudformation-role",
+                     RoleArn = System.Environment.GetEnvironmentVariable("AWS_DEPLOY_ROLE_ARN"),
                     Tags = GetTags(applicationEnvironment, applicationSystem, applicationSubsystem, applicationPlatform, applicationOwner)
                 });
             }
