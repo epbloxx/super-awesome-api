@@ -104,9 +104,9 @@ public class DockerBuildAndPushTask : AsyncFrostingTask<BuildContext>
 
             string destinationTag = $"{context.Options.EcrRoot}/{context.GetEcrRepoName()}:{context.Options.ApplicationVersion}".ToLower();
 
-            var region = RegionEndpoint.GetBySystemName(context.Options.AwsRegion);
+          //  var region = RegionEndpoint.GetBySystemName(context.Options.AwsRegion);
 
-            var ecrClient = new AmazonECRClient(region);
+            var ecrClient = new AmazonECRClient();
             var getTokenResponse = await ecrClient.GetAuthorizationTokenAsync(new GetAuthorizationTokenRequest());
             if (getTokenResponse.HttpStatusCode == HttpStatusCode.OK)
             {

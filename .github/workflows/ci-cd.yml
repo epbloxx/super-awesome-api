@@ -36,6 +36,16 @@ jobs:
             echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
         env:
           MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
+          System : 'supercool'
+          Platform : 'bloxx'
+          Subsystem : 'webapi'
+          Environment : 'test'
+          ClusterName : 'test-bloxx-ecs-cluster'
+          ClusterArn : '${{ secrets.CLUSTER_ARN }}'
+          AWS_ACCESS_KEY_ID :  '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY :  '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_DEFAULT_REGION : 'eu-central-1'
+
 
   deploy-test: 
     runs-on: ubuntu-latest
@@ -77,5 +87,46 @@ jobs:
           SubnetIds :  '${{ secrets.SUBNET_IDS}}'
           HttpsListenerArn : '${{ secrets.HTTP_LISTENER_ARN}}'
           LoadbalancerDns : '${{ secrets.LOAD_BALANCER_DNS}}'
+
+  deploy-sit: 
+    runs-on: ubuntu-latest
+    environment:  sit
+    needs: deploy-test
+    if: ${{ needs.build.outputs.branch == 'main' }}
+    steps: 
+      - uses: actions/checkout@v2
+      - run:  git fetch --unshallow
+    
+     
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.9.7
+        with:
+          versionSpec: '5.8.1'
+          includePrerelease: true          
+   
+      - name: cake deploy
+        
+        run:  |
+            # make file runnable, might not be necessary
+            chmod +x "${GITHUB_WORKSPACE}/build.sh"
+
+            # run deploy script
+            "${GITHUB_WORKSPACE}/build.sh" -t VerifyAndReleaseNext
+        env:
+          System : 'supercool'
+          Platform : 'bloxx'
+          Subsystem : 'webapi'
+          MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
+          Environment : 'test'
+          ClusterName : 'sit-bloxx-ecs-cluster'
+          ClusterArn : '${{ secrets.CLUSTER_ARN }}'
+          ApiGatewayDomainName : 'supercool.sit.parknowportal.com'
+          AWS_ACCESS_KEY_ID :  '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY :  '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_DEFAULT_REGION : 'eu-central-1'
+          VpcId :  '${{ secrets.VPC_ID }}'
+          SubnetIds :  '${{ secrets.SUBNET_IDS}}'
+          HttpsListenerArn : '${{ secrets.HTTP_LISTENER_ARN}}'
+          LoadbalancerDns : '${{ secrets.LOAD_BALANCER_DNS}}'          
 
 
