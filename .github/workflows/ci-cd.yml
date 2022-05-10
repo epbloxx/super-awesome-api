@@ -11,6 +11,7 @@ jobs:
 
   build: 
     runs-on: ubuntu-latest
+    environment: build
     outputs:
       branch: ${{ steps.cake_build.outputs.branch }}
     steps: 
@@ -33,19 +34,17 @@ jobs:
             "${GITHUB_WORKSPACE}/build.sh"
             # output branch name
             echo "::set-output name=branch::$(echo ${GITHUB_REF#refs/heads/})"
+        env:
+          MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
 
-  deploy-dev: 
+  deploy-test: 
     runs-on: ubuntu-latest
-    environment: dev
+    environment: test
     needs: build
-    if: ${{ needs.build.outputs.branch == 'development' }}
     steps: 
       - uses: actions/checkout@v2
       - run:  git fetch --unshallow
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-          include-prerelease: false
+    
      
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v0.9.7
@@ -65,36 +64,3 @@ jobs:
           FEED_URL: '${{ secrets.FEED_URL }}' # MyGetFeed
           FEED_API_KEY: '${{ secrets.FEED_API_KEY }}'
           REPO_URL: '${{ github.server_url }}/${{ github.repository }}'
-
-  deploy-prod: 
-    runs-on: ubuntu-latest
-    environment: prod
-    needs: build
-    if: ${{ needs.build.outputs.branch == 'main' }}
-    steps: 
-      - uses: actions/checkout@v2
-      - run:  git fetch --unshallow
-      - uses: actions/setup-dotnet@v1
-        with:
-          dotnet-version: '6.0.x'
-          include-prerelease: false
-     
-      - name: Install GitVersion
-        uses: gittools/actions/gitversion/setup@v0.9.7
-        with:
-          versionSpec: '5.8.1'
-          includePrerelease: true  
-          
-      - name: cake deploy
-        
-        run:  |
-            # make file runnable, might not be necessary
-            chmod +x "${GITHUB_WORKSPACE}/build.sh"
-
-            # run script
-            "${GITHUB_WORKSPACE}/build.sh" -t Deploy
-        env:
-          FEED_URL: 'https://api.nuget.org/v3/index.json' # Nuget.org
-          FEED_API_KEY: '${{ secrets.FEED_API_KEY }}'
-          REPO_URL: '${{ github.server_url }}/${{ github.repository }}'
- 

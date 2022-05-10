@@ -19,7 +19,7 @@ namespace Build
             host.InstallTool(new Uri("nuget:?package=MSBuild.SonarQube.Runner.Tool&version=4.8.0"));
             host.InstallTool(new Uri("nuget:?package=NuGet.CommandLine&version=5.8.1")); 
             host.InstallTool(new Uri("nuget:?package=JetBrains.dotCover.GlobalTool&version=2021.3.3"));
-            host.InstallTool(new Uri($"nuget:https://www.myget.org/F/parknow-dotnet/auth/{System.Environment.GetEnvironmentVariable("MyGetApiKey")}/api/v2?package=ParameterStoreUploader&version=3.0.1"));
+            host.InstallTool(new Uri($"nuget:https://www.myget.org/F/parknow-dotnet/auth/{System.Environment.GetEnvironmentVariable("MY_GET_API_KEY")}/api/v2?package=ParameterStoreUploader&version=3.0.1"));
             return host;
         }
 
