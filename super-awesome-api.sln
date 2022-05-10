@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperCool.WebApi.Test", "te
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Build", "build\Build.csproj", "{A44471A2-A81C-45D4-A057-E50F939C1EDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SuperCool.WebApi.Integrations", "test\SuperCool.WebApi.Integrations\SuperCool.WebApi.Integrations.csproj", "{C7E93972-5690-4AD2-990D-59D70FD73329}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -34,9 +36,14 @@ Global
 		{A44471A2-A81C-45D4-A057-E50F939C1EDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A44471A2-A81C-45D4-A057-E50F939C1EDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A44471A2-A81C-45D4-A057-E50F939C1EDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7E93972-5690-4AD2-990D-59D70FD73329}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7E93972-5690-4AD2-990D-59D70FD73329}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7E93972-5690-4AD2-990D-59D70FD73329}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7E93972-5690-4AD2-990D-59D70FD73329}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{C3EF7819-C352-4AF9-AC9A-ED2EDDFDF4EA} = {FBE2CFA0-F484-460D-8083-1A1315CBA64E}
 		{4D714558-6903-4B6E-98BF-EEAD7BDF178A} = {809286E8-F978-4E4B-9A02-0E07FF4A3FAA}
+		{C7E93972-5690-4AD2-990D-59D70FD73329} = {809286E8-F978-4E4B-9A02-0E07FF4A3FAA}
 	EndGlobalSection
 EndGlobal
