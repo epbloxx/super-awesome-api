@@ -81,13 +81,15 @@ public class EcrDeployBuildTask : FrostingTask<BuildContext>
             string stackName = @$"{context.Options.ApplicationPlatfrom}-{context.Options.ApplicationSystem}-{context.Options.ApplicationSubsystem}-{context.Options.ApplicationName}-Ecr-stack"
                     .Replace("_", "-")
                     .ToLower();
+            var roleArn = System.Environment.GetEnvironmentVariable("AWS_ECR_ROLE_ARN");
+            context.Log.Information(roleArn);
             context.CloudFormationDeploy(new DeployArguments
             {
                 StackName = stackName,
                 TemplateFile = "template-ecr.yaml",
                 ParameterOverrides = new Dictionary<string, string>
-            {{"Environment", context.Options.ApplicationEnvironment}},
-                RoleArn = System.Environment.GetEnvironmentVariable("AWS_ECR_ROLE_ARN"),
+                {{"Environment", context.Options.ApplicationEnvironment}},
+                RoleArn = roleArn,
                 Capabilities = new List<string> { "CAPABILITY_IAM", "CAPABILITY_NAMED_IAM", "CAPABILITY_AUTO_EXPAND" }
             });
             context.Information("Successfully deploy ECR stack ");
@@ -111,6 +113,7 @@ public class DockerBuildAndPushTask : AsyncFrostingTask<BuildContext>
  
             var sts = new AmazonSecurityTokenServiceClient();
             var roleArn = System.Environment.GetEnvironmentVariable("AWS_ECR_ROLE_ARN");
+
             var result = await sts.AssumeRoleAsync(new AssumeRoleRequest
             {
                 RoleArn = roleArn,
