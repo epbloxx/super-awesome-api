@@ -1,0 +1,14 @@
+---
+Version: "1.0"
+Description: >
+  Supercool WebApi
+Platform: bloxx
+System: supercool
+Subsystem: webapi
+Owner: bloxx squad
+Runtimes:
+  - dotnetocre3.1
+JiraReference:
+ApplicationTypes:
+  - sample
+CustomerFacing: false
