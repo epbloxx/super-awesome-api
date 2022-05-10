@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Enforcement.Register</id>
+    <version>$version$</version>
+    <authors>ParkNow</authors>
+    <description>Enforcement.Register Conatinerized Deployment Package</description>
+    <language>en-US</language>
+  </metadata>
+  <files>
+    <file src="src\Enforcement.Register.WebApi\configs\**"   target="artifacts\configs"/> 
+	<file src="publish\integrations\**"   target="publish\integrations"/>
+  </files>
+</package>

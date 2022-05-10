@@ -1,0 +1,44 @@
+﻿{
+  "ApplicationName": "webapi",
+  "ApplicationPlatfrom": "bloxx",
+  "ApplicationSystem": "supercool",
+  "ApplicationSubsystem": "webapi",
+  "ApplicationOwner": "bloxx squad",
+  "ToolsFolder": "caketools",
+  "ArtifactsFolder": "artifacts",
+  "CoverageResult": "./dotcover/coverageResult.dcvr",
+  "CoverageReport": "./dotcover/coverageReport.html",
+  "PublishFolder": "publish",
+  "SolutionFile": "super-awesome-api.sln",
+  "TestProjectPattern": "Tests",
+  "PackagingNuspec": [
+    "../super-awesome-api.nuspec"
+  ],
+  "PublishProjects": [
+    {
+      "ZipOutput": true,
+      "ZipFileName": "SuperCool.zip",
+      "SettingsZipFileName": "SuperCool_jsonSettings.zip",
+      "SettingsFolder": "src/SuperCool.WebApi/configs"
+    },
+    {
+      "ProjectFile": "test/SuperCool.WebApi.Integrations/SuperCool.WebApi.Integrations.csproj",
+      "ProjectOutput": "integrations"
+    }
+  ],
+  "DotCoverFilters": [ "-:Tests", "-:build" ],
+ 
+  "AwsCodeArtifactsRepo": "bloxx",
+  "AwsCodeArtifactsDomainOwner": "380786374138",
+  "AwsCodeArtifactsDomain": "prod-automation-codeartifact",
+  "AwsRegion": "eu-central-1",
+  "EcrRoot": "380786374138.dkr.ecr.eu-central-1.amazonaws.com",
+  "ReleasableBranches": [ "main", "development", "hotfix", "release" ],
+  "BranchEnvironmentMap": {
+    "main": "prod",
+    "development": "test",
+    "hotfix": "sit",
+    "release": "sit"
+  },
+  "IntegrationTestsDll": "publish/integrations/SuperCool.WebApi.Integrations.dll"
+}
