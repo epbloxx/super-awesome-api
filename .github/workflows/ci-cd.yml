@@ -37,7 +37,7 @@ jobs:
         env:
           MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
           System : 'supercool'
-          Platform : 'bloxx'
+          Platform : 'marat'
           Subsystem : 'webapi'
           Environment : 'test'
           AWS_ACCESS_KEY_ID :  '${{ secrets.AWS_ACCESS_KEY_ID }}'
