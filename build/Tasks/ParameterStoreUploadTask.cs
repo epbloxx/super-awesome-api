@@ -82,7 +82,7 @@ namespace Build.Tasks
 
 
 
-            var configFolder = context.Options.ArtifactsFolder + "/configs";
+            var configFolder = "./src/SuperCool.WebApi/configs";
             if (!context.DirectoryExists(configFolder))
                 throw new DirectoryNotFoundException(configFolder);
 

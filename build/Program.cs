@@ -150,6 +150,7 @@ public class DefaultTask : FrostingTask
 }
 
 [TaskName(nameof(VerifyAndReleaseNext))]
+[IsDependentOn(typeof(VersionTask))]
 [IsDependentOn(typeof(ParameterStoreUploadTask))]
 [IsDependentOn(typeof(ServerlessDeployTask))]
 [IsDependentOn(typeof(ReleaseTask))]

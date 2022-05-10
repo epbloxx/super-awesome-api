@@ -38,10 +38,11 @@ Parameters:
     Default: register
 
   ClusterName:
-    Type: String
+    Type: String 
 
   ClusterArn:
     Type: String
+    Default: 
 
   Environment:
     Type: String
@@ -179,7 +180,7 @@ Resources:
             Values:
               - !Ref ApiGatewayDomainName
       ListenerArn: !Ref HttpsListenerArn
-      Priority: 1
+      Priority: 10000
 
   SecurityGroup:
     Type: AWS::EC2::SecurityGroup

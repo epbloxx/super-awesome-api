@@ -41,6 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     needs: build
+    if: ${{ needs.build.outputs.branch == 'main' }}
     steps: 
       - uses: actions/checkout@v2
       - run:  git fetch --unshallow
@@ -59,8 +60,22 @@ jobs:
             chmod +x "${GITHUB_WORKSPACE}/build.sh"
 
             # run deploy script
-            "${GITHUB_WORKSPACE}/build.sh" -t Deploy
+            "${GITHUB_WORKSPACE}/build.sh" -t VerifyAndReleaseNext
         env:
-          FEED_URL: '${{ secrets.FEED_URL }}' # MyGetFeed
-          FEED_API_KEY: '${{ secrets.FEED_API_KEY }}'
-          REPO_URL: '${{ github.server_url }}/${{ github.repository }}'
+          System : 'supercool'
+          Platform : 'bloxx'
+          Subsystem : 'webapi'
+          MY_GET_API_KEY: '${{ secrets.MY_GET_API_KEY }}' # MyGetFeed
+          Environment : 'test'
+          ClusterName : 'test-bloxx-ecs-cluster'
+          ClusterArn : '${{ secrets.CLUSTER_ARN }}'
+          ApiGatewayDomainName : 'supercool.test.parknowportal.com'
+          AWS_ACCESS_KEY_ID :  '${{ secrets.AWS_ACCESS_KEY_ID }}'
+          AWS_SECRET_ACCESS_KEY :  '${{ secrets.AWS_SECRET_ACCESS_KEY }}'
+          AWS_DEFAULT_REGION : 'eu-central-1'
+          VpcId :  '${{ secrets.VPC_ID }}'
+          SubnetIds :  '${{ secrets.SUBNET_IDS}}'
+          HttpsListenerArn : '${{ secrets.HTTP_LISTENER_ARN}}'
+          LoadbalancerDns : '${{ secrets.LOAD_BALANCER_DNS}}'
+
+
